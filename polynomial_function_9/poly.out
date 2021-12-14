@@ -1,0 +1,5 @@
+f = 1 * (X^2) + -4 * (X^1) + 4 * (X^0)
+a0's divisors are: [1, -1, 4, -4, 2, -2]
+
+f(2) = 0
+f has the following int roots: [2]
