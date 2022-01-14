@@ -50,9 +50,19 @@ with open("poly.in", "r") as f_in:
 with open("poly.out", "w+") as f_out:
     f_out.write("f = ")
     for i in range(0, n):
-        f_out.write(str(poly_coefficients[i]) + f" * (X^{n - i - 1})")
-        if i != n - 1:
-            f_out.write(" + ")
+        if poly_coefficients[i] != 0:
+            coeffs_str = str(poly_coefficients[i])
+            if poly_coefficients[i] < 0:
+                coeffs_str = "(" + coeffs_str + ")"
+
+            value_str = f" * (X^{n - i - 1})"
+            if n - i - 1 == 0:
+                value_str = f""
+
+            f_out.write(f"{coeffs_str}{value_str}")
+
+            if i != n - 1:
+                f_out.write(" + ")
 
     a0_divs = DivContainer(poly_coefficients[n - 1])
     f_out.write(f'\na0\'s divisors are: {a0_divs.div_list}')
