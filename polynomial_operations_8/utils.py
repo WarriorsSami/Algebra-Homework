@@ -14,9 +14,19 @@ def print_poly(f_out, n, coeffs_repr_f, name):
     f_out.write(f"{name} = ")
     coeffs_repr_f = np.flip(coeffs_repr_f)
     for i in range(0, n):
-        f_out.write(str(coeffs_repr_f[i]) + f" * (X^{n - i - 1})")
-        if i != n - 1:
-            f_out.write(" + ")
+        if coeffs_repr_f[i] != 0:
+            coeffs_str = str(coeffs_repr_f[i])
+            if coeffs_repr_f[i] < 0:
+                coeffs_str = "(" + coeffs_str + ")"
+
+            value_str = f" * (X^{n - i - 1})"
+            if n - i - 1 == 0:
+                value_str = f""
+
+            f_out.write(f"{coeffs_str}{value_str}")
+
+            if i != n - 1:
+                f_out.write(" + ")
 
 
 def pol2cart(r, phi):
@@ -64,9 +74,9 @@ class FFT(object):
     """
     def fft(self, P, omega):
         if omega == 1:
-            return [sum(P)] # get the only left element
+            return [sum(P)]  # get the only left element
 
-        omega2 = omega ** 2 # the current unity root
+        omega2 = omega ** 2  # the current unity root
         Pe = self.fft(P[0::2], omega2)  # the `sub-polynomial` for even indices
         Po = self.fft(P[1::2], omega2)  # the `sub-polynomial` for odd indices
         Pr = [None] * omega.th  # omega.th = the length of the current `sub-polynomial`
