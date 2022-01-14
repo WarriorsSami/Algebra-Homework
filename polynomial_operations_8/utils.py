@@ -64,9 +64,9 @@ class FFT(object):
     """
     def fft(self, P, omega):
         if omega == 1:
-            return [sum(P)]  # get the only left element
+            return [sum(P)] # get the only left element
 
-        omega2 = omega ** 2
+        omega2 = omega ** 2 # the current unity root
         Pe = self.fft(P[0::2], omega2)  # the `sub-polynomial` for even indices
         Po = self.fft(P[1::2], omega2)  # the `sub-polynomial` for odd indices
         Pr = [None] * omega.th  # omega.th = the length of the current `sub-polynomial`
@@ -98,11 +98,16 @@ class FFT(object):
 
     # Fast Polynomials Multiplication
     def fpm(self):
+        # get the result grade of A*B polynomial
         n = 1 << (len(self.A) + len(self.B) - 2).bit_length()
+        # initialize a wrapper class for fetching all the n-th roots of unity
         omega = NthRU(n)
 
+        # compute fft arrays for both polynomials
         A_FFT = self.fft(self.A, omega)
         B_FFT = self.fft(self.B, omega)
 
+        # multiply the fft arrays/value representations component by component
         P = [A_FFT[i] * B_FFT[i] for i in range(n)]
+        # and apply inverse fft to convert back to the coefficient representation
         return self.ifft(P, omega, n)
